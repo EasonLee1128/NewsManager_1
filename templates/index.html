@@ -1,0 +1,202 @@
+<html>
+    <head>
+        <title>新聞管理系統</title>
+        <link rel="stylesheet" type="text/css" href="/static/site.css" />
+    </head>
+    <body>
+     <tr><div style=" height: 24px; background-color:#ecf1fc ; padding:10px ;margin-bottom: 5px; ">
+        <font size = "3">新聞管理系統  &nbsp;&nbsp;  日期時間 : {{now}}   &nbsp;&nbsp;   新聞總篇數：<td><a >{{length}} <font   color= ' blue'></a></td></input> </font>&nbsp;&nbsp; &nbsp;&nbsp; 
+        
+   <p><button onclick="creatnews()" id = btn   name='creatnews'  type = submit  style="width:120px;height:40px;border:2px ; color:rgb(230, 230, 238) none;background-color:#69bebe;"  > <font color = white>新增文章</font></button></p>  
+         
+          </div> 
+          <br>
+         <br>
+         
+           <script> //<tr>{{title}} {{author}} {{content}} {{now}}</tr>//<input font size = '3'  type ="button" onclick="creatnews()" value="新增文章" style="color:white  ;width:90px;height:30px;border:2px rgb(230, 230, 238) none;background-color:#69bebe" ></p>
+           //  <p><button onclick="creatnews()" id = btn   name='creatnews'  type = submit  style="width:120px;height:40px;border:2px ; color:rgb(230, 230, 238) none;background-color:#69bebe;"  > <font color = white>新增文章</font></button></p>  
+
+                        function creatnews() {
+
+                            window.open('/creatnews',"_self");
+                                   
+                               //    document.form1.action = "/creatnews";
+                               //    document.form1.submit();}
+                        
+                    
+
+                        }
+                        
+                        
+                    </script>
+    
+
+    <script>
+
+window.onload = function () {
+           
+      // var userName='xiaoming';
+       
+      // alert(userName);
+         
+       var table = document.getElementById('myTable');
+               var rows = table.getElementsByTagName('tr');
+               var tds = table.getElementsByTagName('td');
+               var tid = '';
+               var cell = '' ;
+               var cellHTML = '' ;       
+ 
+               for (var i = 1; i < rows.length+1; i++)
+
+               //for (var i = 1; i < 6; i++)  // 判斷數字<0 則變紅色 then 變千分位
+               {
+                  // rows[i].i = i;             
+
+                   /*for (var j = 1; j < 7; j++) {
+
+                   cell= rows[i].cells[j].innerText
+                   if (cell < 0){
+                    cell= rows[i].cells[j].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                    cell= rows[i].cells[j].innerHTML = '<td align = "center"><font color="red" align = center><a   align ="center">'+cell+'</a></font></td>';
+                    }
+                   else {    
+                       cell= rows[i].cells[j].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+                       cell= rows[i].cells[j].innerHTML = '<td align = "center"><font color="" align = center><a   align ="center">'+cell+'</a></font></td>'              
+                       }}   */                
+
+                cell= rows[i].cells[0].innerText
+
+                if(  cell >=0){
+
+               cell= rows[i].cells[0].innerHTML = '<td  ><font size = "1"   type = hidden ><a>'+cell+'</a></font></td>';
+
+               }        // style="color:transparent"    
+                   
+                cell= rows[i].cells[4].innerText
+
+                
+                cell= rows[i].cells[4].innerHTML = '<td align = "center"><font color="blue" align = center><a  href="javascript:void(0)" onclick= getcell() align ="center">'+cell+'</a></font></td>';                          
+                
+               
+             
+            }      
+               
+        }
+
+    </script>
+
+
+
+        <div class="shadowbox">
+
+    <table align="center" border="1" width="200" id="myTable" class="tablesorter">
+
+        <thead>
+         
+            <tr height = '40px'>
+
+
+               <th><font style="display: none" style="color:transparent"  size = '0'  color = gray></font></th>
+              
+                <th width="77px"><font size = '3' color = gray>標題 Title </font></th>
+                <th><font size = '3'   color = gray>作者 Author </font></th>
+                <th><font size = '4'   color = gray >公佈時間 PublishTime </font></th>
+                <th><font size = '3'   color = gray>內文 Content </font></th>
+            
+
+            </tr>
+        </thead>
+
+        <tbody>
+         
+
+            <form method="GET" action="hello3/">
+            
+            {% for row in readData %}
+            <tr>
+               
+                {% for cell in row %}
+              
+                <td align = 'left'>{{cell}}</td>
+ 
+                <!--<a href = "hello4?csrfmiddlewaretoken=WZ4CXkMuc8VAbAKET9YdPemQDpvLvbUqeioTt745oh3jA2MKMKhOCg2qzwHzOIpA&StartDate=2021-02-12&EndDate=2021-02-22&ItmsGrpNam_List=%27107%27&Slpname_List=%274%27&ProductBtn=ProductBtn" > -->
+
+                {% endfor %}
+            </tr>
+            {% endfor %}
+
+           
+
+            </form>
+
+<script>
+
+                function getcell() {
+
+                    var table = document.getElementById('myTable');
+                    var rows = table.getElementsByTagName('tr');
+                    //var tid = '';
+                    var cell = '' ;
+
+                    for (var i = 1; i < rows.length; i++) {
+                        rows[i].i = i;
+                        rows[i].cells[4].onclick = handler;
+
+                          }
+
+                          function handler() 
+                          {
+                     
+                                var row = this.parentNode;
+
+                                tid = this.innerText;
+                                   // cell = row.cells[0].innerHTML;
+
+                                cell = row.cells[0].innerText ;
+                                content = row.cells[4].innerText ;
+                                author = row.cells[2].innerText ;
+                                title = row.cells[1].innerText ;
+
+
+                                   //cell = row.cells[0].text();
+
+                                  var getUrlString = location.href;
+                                  var url = new URL(getUrlString);
+
+                               // var  StartDate = url.searchParams.get('StartDate')// 回傳 21
+                               // var  EndDate =  url.searchParams.get('EndDate')//回傳 jason       
+                               // var  Slpname_List =  url.searchParams.get('Slpname_List')   
+                                    
+                               // alert( '這裡放彈跳對話視窗要顯示的文字內容' );
+                                
+
+                                                       //$('#loadingIMG').show();  readingNews 
+
+                                                       window.open('/readingNews?'+'newsid='+cell+'&content='+content+'&title='+title+'&author='+author,"_self");
+
+                                   // alert( cell ) ;
+                            }
+                }
+            </script>
+
+            </form>
+        
+                  
+        </tbody>
+
+
+
+    </body>
+</html>
+ <script src='//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js'></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.30.5/css/theme.blue.min.css">
+    </link>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.30.5/js/jquery.tablesorter.min.js"></script>
+    <script>
+        $("#myTable").tablesorter({
+            theme: "blue",
+            widgets: ['zebra']
+        });
+    </script>

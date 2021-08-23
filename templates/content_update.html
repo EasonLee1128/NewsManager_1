@@ -1,0 +1,119 @@
+<html>
+    <head>
+        <title>新聞管理系統</title>
+        <link rel="stylesheet" type="text/css" href="/static/site.css" />
+    </head>
+    <body>
+     <tr><div style=" height: 24px; background-color:#ecf1fc ; padding:10px ;margin-bottom: 5px; ">
+        <font size = "3"> 新聞管理系統 &nbsp;&nbsp;日期時間 : {{now}}  <td><a ><font   color= ' blue'></a></td></input> </font>&nbsp;&nbsp; &nbsp;&nbsp; 
+         <input  font size = '3'  type ="button" onclick="history.back()" value="返回" style="color:white  ;width:90px;height:30px;border:2px rgb(230, 230, 238) none;background-color:#69bebe" ></p>
+    </div> 
+
+ <script>
+
+window.onload = function () {
+                  
+        }
+
+    </script>    
+
+<form method = "GET" name ="submitForm">
+
+      <p>標題:{{title}} </p>
+
+
+    <p>作者:{{author}}</p>
+
+  <table id="myTable">  
+  
+
+  <tr>
+  <p>內文:</p>  
+  <p><textarea style="font-size:37px;color:orange;" name= content id = content cols="50" rows="7">
+  {{ content }}
+</textarea></p>
+</tr>
+
+
+<tr> <td>原文時間:</td><td>{{news_datetime}}</td>  <td>&nbsp;&nbsp; 新聞編號:</td><td id = newsid>{{ newsid }}</td></tr>
+</table>
+</form> <script>  // /fomr 結束的位置放在button下 action會先帶原本的url無法用新的url連過去</script>
+
+
+<table>
+
+
+<tr>
+
+
+
+
+  <td><p><button onclick="updateNews()"  method="GET" id = btn     style="width:120px;height:40px;border:2px ; color:rgb(230, 230, 238) none;background-color:#69bebe;"  > <font color = white>重新編輯</font></button></p> </td>
+
+  <td><p><button onclick="deleteNews()"  method="GET" id = btn     style="width:120px;height:40px;border:2px ; color:rgb(230, 230, 238) none;background-color:#69bebe;"  > <font color = white>刪除文章</font></button></p> </td>
+ 
+</tr>
+
+</table>
+<script> 
+
+                        function updateNews() {
+
+                             var yes = confirm('你確定重新編輯嗎？');
+
+                            if (yes) {
+                                                
+                        const nameElement = document.getElementById("content");
+                        const content = nameElement.value;
+
+                            var getUrlString = location.href;
+                                  var url = new URL(getUrlString);
+
+                                var  newsid = url.searchParams.get('newsid')
+                                
+                          window.open('/updateNews?'+'newsid='+newsid+'&content='+content,'_self'); //OK
+                          //window.opener=null;
+                          //window.close();
+                          
+                                } 
+                                
+                                else {
+
+                     
+                            }  
+                          
+
+                                }
+
+                        function deleteNews() {
+
+                             var yes = confirm('你確定刪除文章嗎？');
+
+                            if (yes) {
+                                                
+                       
+
+                            var getUrlString = location.href;
+                                  var url = new URL(getUrlString);
+
+                                var  newsid = url.searchParams.get('newsid')
+                                
+                          window.open('/deleteNews?'+'newsid='+newsid,'_self'); //OK
+                          //window.opener=null;
+                          //window.close();
+                          
+                                } 
+                                
+                                else {
+
+                     
+                            }  
+                         
+                        }
+                        
+                        
+                    </script>
+
+                   
+    </body>
+</html>

@@ -1,0 +1,100 @@
+<html>
+    <head>
+        <title>新聞管理系統</title>
+        <link rel="stylesheet" type="text/css" href="/static/site.css" />
+    </head>
+    <body >
+     <tr><div style=" height: 24px; background-color:#ecf1fc ; padding:10px ;margin-bottom: 5px; ">
+        <font size = "3"> 新聞管理系統 &nbsp;&nbsp;日期時間 : {{now}} <td><a ><font   color= ' blue'></a></td></input> </font>&nbsp;&nbsp; &nbsp;&nbsp; 
+         <input  font size = '3'  type ="button" onclick="history.back()" value="返回" style="color:white  ;width:90px;height:30px;border:2px rgb(230, 230, 238) none;background-color:#69bebe" ></p>
+    </div> 
+<script>
+   // window.onload = function ()  action = "/addcreatnews"
+
+
+
+    </script>
+
+<form method = "POST" name ="submitForm" >
+
+      <p>標題:<input  required="required" placeholder = '請輸入標題' name="title"  id = title type="text"  ></p>
+
+
+    <p>作者:<input required   name="author"placeholder = '請輸入作者' type="text" id = author ></p>
+
+    
+   <p>內文:</p>   
+  <p >
+  
+
+<textarea  rows="7" cols="50" style="font-size:37px;color:orange;" name= content id = content  placeholder="Write some description here...">
+</textarea></p>
+
+</form>
+<p></p> <script> //<textarea>中間不能有空格placeholder才會有作用,不然內容會有空白鍵就沒預設的文字 name= content id = content  type = submit 原文時間:{{now}} placeholder="請輸入文字..."  action = "{{url_for('addcreatnews')}}"</script>
+<table>
+
+
+
+
+<tr>
+ <td><p><button onclick="addcreatnews()"  method="POST" id = btn  type = submit  style="width:120px;height:40px;border:2px ; color:rgb(230, 230, 238) none;background-color:#69bebe;"  > <font color = white>新增文章</font></button></p> </td>
+ 
+</tr>
+
+
+
+</table>
+<script>
+
+
+//const nameElement = document.getElementById("content");
+                //        const content = nameElement.value;
+
+
+ 
+ function addcreatnews() {
+    var title = document.getElementById("title").value;
+    var author = document.getElementById("author").value;
+    var content = document.getElementById("content").value;
+    if (title == "" ){
+
+      alert('請輸入標題');   
+
+    }
+    else if  (author == ""){
+      alert('請輸入作者');}
+
+    else if  (content == ""){
+      alert('請輸入內容');}
+      else {
+
+        var yes = confirm('你確定新增嗎？');
+
+if (yes) { document.submitForm.action = "/addcreatnews";  
+
+
+document.submitForm.submit(); 
+         //alert('你按了確定按鈕' +title+author+content);  // 少了一個,會錯 不能跑 也不會顯示什麼
+
+
+} 
+else {
+    //alert('你按了取消按鈕');
+}
+      }
+
+    
+ 
+ 
+   }
+</script>
+
+
+
+                    
+                    
+
+       
+    </body>
+</html>
