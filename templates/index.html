@@ -1,17 +1,29 @@
 <html>
     <head>
         <title>新聞管理系統</title>
-        <link rel="stylesheet" type="text/css" href="/static/site.css" />
+        <link rel="stylesheet" type="text/css" href="/static/css/site.css" />
+        <link rel="stylesheet" href="{{url_for('static', filename='css/site.css')}} " />
+
+
     </head>
     <body>
-     <tr><div style=" height: 24px; background-color:#ecf1fc ; padding:10px ;margin-bottom: 5px; ">
-        <font size = "3">新聞管理系統  &nbsp;&nbsp;  日期時間 : {{now}}   &nbsp;&nbsp;   新聞總篇數：<td><a >{{length}} <font   color= ' blue'></a></td></input> </font>&nbsp;&nbsp; &nbsp;&nbsp; 
+    <div class="bd-example" align="middle">
+ 
+
         
-   <p><button onclick="creatnews()" id = btn   name='creatnews'  type = submit  style="width:120px;height:40px;border:2px ; color:rgb(230, 230, 238) none;background-color:#69bebe;"  > <font color = white>新增文章</font></button></p>  
+</div>
+
+
+     <tr><div style=" height: 24px; background-color:#ecf1fc ; padding:10px ;margin-bottom: 5px; ">
+       
+        <font size = "3">新聞管理系統  &nbsp;&nbsp;  日期時間 : {{now}}   &nbsp;&nbsp;   新聞總篇數：<td><a ><font color=orange> {{length}} <font   color= ' blue'></a></td></input> </font>&nbsp;&nbsp; &nbsp;&nbsp; 
+
+<!--<img src="{{url_for('static', filename='images/loadingSun.gif')}}" width=33 align= 'middle' /> OK-->
+        
+   <p><img src="/static/images/loadingSun.gif" width="33" id="oImg" style='opacity:1'  hight="200px" align="center" ><button onclick="creatnews()" id = btn   name='creatnews'  type = submit  style="width:120px;height:40px;border:2px ; color:rgb(230, 230, 238) none;background-color:#69bebe;"  > <font color = white>新增文章</font></button></p>  
          
           </div> 
-          <br>
-         <br>
+        
          
            <script> //<tr>{{title}} {{author}} {{content}} {{now}}</tr>//<input font size = '3'  type ="button" onclick="creatnews()" value="新增文章" style="color:white  ;width:90px;height:30px;border:2px rgb(230, 230, 238) none;background-color:#69bebe" ></p>
            //  <p><button onclick="creatnews()" id = btn   name='creatnews'  type = submit  style="width:120px;height:40px;border:2px ; color:rgb(230, 230, 238) none;background-color:#69bebe;"  > <font color = white>新增文章</font></button></p>  
@@ -62,16 +74,22 @@ window.onload = function () {
                    else {    
                        cell= rows[i].cells[j].innerText.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
                        cell= rows[i].cells[j].innerHTML = '<td align = "center"><font color="" align = center><a   align ="center">'+cell+'</a></font></td>'              
-                       }}   */                
+                       }}   */   
+                                // <td style="display:none"> 或者给这个td起个ID 如 ID为 "this_td"用jquery 的 $("#this_td").hide()  则可以让此td隐藏   
+                                //$("#this_td").hide()   style="display:none" style="visibility:hidden"
+ 
+
+
+ 
 
                 cell= rows[i].cells[0].innerText
 
                 if(  cell >=0){
 
-               cell= rows[i].cells[0].innerHTML = '<td  ><font size = "1"   type = hidden ><a>'+cell+'</a></font></td>';
+               cell= rows[i].cells[0].innerHTML = '<td    ><font size = "0"      type = "hidden" ><a>'+cell+'</a></font></td>';
 
                }        // style="color:transparent"    
-                   
+                  
                 cell= rows[i].cells[4].innerText
 
                 
@@ -84,10 +102,42 @@ window.onload = function () {
         }
 
     </script>
+    <table align = right><th> <td  >
+<form  method ='get' action='/index'>
+請選擇分頁:<select onclick = selectPageNum() id="PageNum" name="PageNum" onchange="this.form.submit()" >
+
+<option>{{PageNum}} </option>
+{%for i in range(PageNumLen)%}
+
+         <option>{{i+1}} </option>
+
+         {% endfor %}
+</select>
+現在分頁<font color='red' ><strong>{{PageNum}}&nbsp;</font></strong>
+</form> </td>
+
+    
+    </th>
+    
+    </table>
+
+    
+
+   
+<script>     //list="browsers"  <input  onclick = selectPageNum()  name="PageNum" id=PageNum></label> </script>
 
 
+<script>
+/*func selectPageNum(){
+const nameElement = document.getElementById("PageNum");
+    const PageNum = nameElement.value;
 
-        <div class="shadowbox">
+    window.open('/index?'+'PageNum='+PageNum,'_self'); 
+    
+    }//OK*    style="display:none"/  <div class="shadowbox">
+</script>
+
+       
 
     <table align="center" border="1" width="200" id="myTable" class="tablesorter">
 
@@ -96,9 +146,9 @@ window.onload = function () {
             <tr height = '40px'>
 
 
-               <th><font style="display: none" style="color:transparent"  size = '0'  color = gray></font></th>
+               <th     size = '0'  ><font   size = '0'  color = gray>編號</font></th>
               
-                <th width="77px"><font size = '3' color = gray>標題 Title </font></th>
+                <th width="111px"><font size = '3' color = gray>標題 Title </font></th>
                 <th><font size = '3'   color = gray>作者 Author </font></th>
                 <th><font size = '4'   color = gray >公佈時間 PublishTime </font></th>
                 <th><font size = '3'   color = gray>內文 Content </font></th>
@@ -110,14 +160,15 @@ window.onload = function () {
         <tbody>
          
 
-            <form method="GET" action="hello3/">
+            <form method="GET" >
             
             {% for row in readData %}
             <tr>
                
                 {% for cell in row %}
-              
-                <td align = 'left'>{{cell}}</td>
+                
+                              
+                <td    align = 'left'>{{cell}}</td>
  
                 <!--<a href = "hello4?csrfmiddlewaretoken=WZ4CXkMuc8VAbAKET9YdPemQDpvLvbUqeioTt745oh3jA2MKMKhOCg2qzwHzOIpA&StartDate=2021-02-12&EndDate=2021-02-22&ItmsGrpNam_List=%27107%27&Slpname_List=%274%27&ProductBtn=ProductBtn" > -->
 
