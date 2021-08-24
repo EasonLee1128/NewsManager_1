@@ -1,3 +1,5 @@
+
+#import types
 from flask import Flask, render_template, request,url_for,redirect
 from datetime import datetime
 #import time
@@ -8,7 +10,7 @@ from pandas import DataFrame
 
 app = Flask(__name__)
 
-@app.route('/index')
+@app.route('/index')  #  ,methods=['get']
 @app.route('/')
 def index():
     
@@ -16,8 +18,62 @@ def index():
     now = now.strftime("%Y-%m-%d %H:%M:%S")
     
     conn = sqlite3.connect('./news20210819.db')
-    cursor = conn.cursor() 
-    cursor = conn.execute("SELECT * from NEWSTABLE")
+    #cursor = conn.cursor() 
+    
+    cursorCount=conn.execute("SELECT count(*) FROM NEWSTABLE")
+    cursorCount = cursorCount.fetchone()[0]
+    
+    if cursorCount%100 !=0:
+    
+        PageNumLen =int(cursorCount/100)+1
+    else: 
+        PageNumLen =(cursorCount/100)
+    
+    PageNum =  request.args.get('PageNum')
+    if  PageNum == None:
+        PageNum = 1
+    else:    
+        PageNum =  request.args.get('PageNum')
+        PageNum = int(PageNum)
+        
+        print(type(PageNum))
+        print("PageNum =  request.args.get('PageNum')ype(PageNum)")
+       
+       
+    '''
+    if type(request.args.get('PageNum'))== "":
+       PageNum = 1
+       print('pagenum =11111')
+    
+    if    int(request.args.get('PageNum'))>=1:
+          PageNum =  request.args.get('PageNum')
+          PageNum = int(PageNum)
+          
+          print(type(PageNum))
+          print("PageNum =  request.args.get('PageNum')ype(PageNum)")
+    '''   
+         
+         
+      
+    
+    '''
+    if request.args.get('PageNum')!="":
+       PageNum =  request.args.get('PageNum')
+       PageNum = int(PageNum)
+       print(type(PageNum))
+       print("PageNum =  request.args.get('PageNum')ype(PageNum)")
+    else:
+       PageNum = 1
+    '''   
+    
+    print(type(cursorCount))
+    
+    #print(PageNum)
+   
+    
+    OFFSETtoStartRow = cursorCount-(100*PageNum)
+    
+    cursor = conn.execute(f'SELECT   * from NEWSTABLE order by news_datetime limit 100 OFFSET {OFFSETtoStartRow}  ')
     readData = cursor.fetchall()
     readDataDf = DataFrame(readData)
     
@@ -30,8 +86,11 @@ def index():
    
     #readDataDf.pop(0)
     readData = readDataDf.values.tolist()
-    length = len(readData)
-    #title = readData[0][0]    
+    
+    length = cursorCount
+    #length = len(readData)
+    #title = readData[0][0]  
+      
     readData = readData[::-1]
     #reversed_readData = readData.iloc[::-1]
     
